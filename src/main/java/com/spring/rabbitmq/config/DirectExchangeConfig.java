@@ -3,10 +3,14 @@ package com.spring.rabbitmq.config;
 import javax.annotation.PostConstruct;
 
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -72,6 +76,15 @@ public class DirectExchangeConfig {
     @Bean
     Binding createDirectBinding3(){
         return BindingBuilder.bind(createDirectQueue3()).to(createDirectExchange()).with(binding3);
+    }
+
+
+    @Bean
+    public AmqpTemplate directQueue(ConnectionFactory connectionFactory, MessageConverter messageConverter){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setExchange(exchange);
+        return rabbitTemplate;
     }
 
     @PostConstruct
