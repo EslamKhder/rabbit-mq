@@ -8,6 +8,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -31,6 +32,9 @@ public class DirectExchangeConfig {
     @Value("${rabbit.direct3.queue}")
     private String directQueue3;
 
+    @Value("${rabbit.deed-line-queue}")
+    private String directQueue4;
+
     @Value("${rabbit.direct1.bi}")
     private String binding1;
 
@@ -45,7 +49,16 @@ public class DirectExchangeConfig {
 
     @Bean
     Queue createDirectQueue1(){
-        return new Queue(directQueue1,true,false,false);
+        return QueueBuilder.durable(directQueue1)
+                .deadLetterExchange("")// default
+                .deadLetterRoutingKey(directQueue4)
+                .build();
+        //return new Queue(directQueue1,true,false,false);
+    }
+
+    @Bean
+    Queue createDeedLineQueue(){
+        return new Queue(directQueue4,true,false,false);
     }
 
     @Bean
@@ -92,6 +105,7 @@ public class DirectExchangeConfig {
         amqpAdmin.declareQueue(createDirectQueue1());
         amqpAdmin.declareQueue(createDirectQueue2());
         amqpAdmin.declareQueue(createDirectQueue3());
+        amqpAdmin.declareQueue(createDeedLineQueue());
 
         amqpAdmin.declareExchange(createDirectExchange());
 
