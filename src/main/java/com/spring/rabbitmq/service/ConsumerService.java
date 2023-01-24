@@ -12,7 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.rabbitmq.model.Message;
+import com.spring.rabbitmq.model.MessageDto;
 
 @Service
 public class ConsumerService {
@@ -29,10 +29,10 @@ public class ConsumerService {
         return (int) property.get(RabbitAdmin.QUEUE_MESSAGE_COUNT);
     }
 
-    public List<Message> receiveMessages(String queueName){
+    public List<MessageDto> receiveMessages(String queueName){
         int count = getCountMessage(queueName);
         return IntStream.range(0,count)
-                .mapToObj(value -> (Message)rabbitTemplate.receiveAndConvert(queueName))
+                .mapToObj(value -> (MessageDto)rabbitTemplate.receiveAndConvert(queueName))
                 .collect(Collectors.toList());
     }
 }

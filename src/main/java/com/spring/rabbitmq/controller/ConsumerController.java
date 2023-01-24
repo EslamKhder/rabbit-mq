@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rabbitmq.model.Message;
+import com.spring.rabbitmq.model.MessageDto;
 import com.spring.rabbitmq.service.ConsumerService;
 
 @RestController
@@ -20,7 +20,7 @@ public class ConsumerController {
 
 
     @GetMapping("/messages/{queueName}")
-    public List<Message> getMessage(@PathVariable String queueName){
+    public List<MessageDto> getMessage(@PathVariable String queueName){
         return consumerService.receiveMessages(queueName);
     }
 }

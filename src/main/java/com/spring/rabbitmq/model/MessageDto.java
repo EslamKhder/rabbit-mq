@@ -2,12 +2,12 @@ package com.spring.rabbitmq.model;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class MessageDto {
 
     private String status;
     private LocalDateTime localDateTime;
 
-    public Message(String status, LocalDateTime localDateTime) {
+    public MessageDto(String status, LocalDateTime localDateTime) {
         this.status = status;
         this.localDateTime = localDateTime;
     }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rabbitmq.model.Message;
+import com.spring.rabbitmq.model.MessageDto;
 
 @RestController
 @RequestMapping("/header")
@@ -26,8 +26,8 @@ public class HeaderExchangeController {
             @RequestParam(value = "warning",required = false) String warning,
             @RequestParam(value = "debug",required = false) String debug
     ){
-        Message message = new Message("Header", LocalDateTime.now());
-        MessageBuilder messageBuilder = MessageBuilder.withBody(message.toString().getBytes());
+        MessageDto messageDto = new MessageDto("Header", LocalDateTime.now());
+        MessageBuilder messageBuilder = MessageBuilder.withBody(messageDto.toString().getBytes());
         if(error != null){
             messageBuilder.setHeader("error",error);
         }

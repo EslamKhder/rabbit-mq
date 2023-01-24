@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rabbitmq.model.Message;
+import com.spring.rabbitmq.model.MessageDto;
 
 @RestController
 @RequestMapping("/direct")
@@ -43,8 +41,8 @@ public class DirectExchangeController {
         } else {
             throw new Exception("You must Enter 1,2 or 3 only");
         }
-        Message message = new Message("direct", LocalDateTime.now());
-        directQueue.convertAndSend(key,message);
+        MessageDto messageDto = new MessageDto("direct", LocalDateTime.now());
+        directQueue.convertAndSend(key, messageDto);
 
         return "Success Direct";
     }
